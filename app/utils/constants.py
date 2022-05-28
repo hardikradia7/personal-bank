@@ -1,6 +1,6 @@
 API = 'api'
 VERSION_1 = 'v1'
-IBAN = "iban"
+IBANS = "ibans"
 
 COUNTRY_CODE_IBAN_LENGTH = {
     'AT': 20,
