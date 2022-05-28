@@ -3,8 +3,8 @@ from fastapi import APIRouter
 from starlette.responses import JSONResponse
 from http import HTTPStatus
 
-from app.schemas.v1 import iban
-from app.utils import consts
+from app.schemas.v1 import ibans
+from app.utils import constants
 from app.utils import exceptions
 from app.utils import error_codes
 
@@ -13,9 +13,9 @@ router = APIRouter()
 
 @router.post(
     "/validate",
-    response_model=iban.IBANValidateResponse
+    response_model=ibans.IBANValidateResponse
 )
-def validate_iban_number(request: iban.IBANValidateRequest):
+def validate_iban_number(request: ibans.IBANValidateRequest):
     """
     Validate the given IBAN number is valid or not.
     :param request: IBAN number
@@ -34,7 +34,7 @@ def validate_iban_number(request: iban.IBANValidateRequest):
             )
 
         # Checking if len of iban number is valid acc to country code
-        if n != consts.COUNTRY_CODE_IBAN_LENGTH.get(country_code, 0) or n == 0:
+        if n != constants.COUNTRY_CODE_IBAN_LENGTH.get(country_code, 0) or n == 0:
             raise exceptions.InvalidIBANLength(
                 getattr(error_codes, "INVALID_IBAN_LENGTH")
             )
@@ -43,7 +43,7 @@ def validate_iban_number(request: iban.IBANValidateRequest):
         iban_str = iban_str[4:] + iban_str[:4]
         new_iban_str = ""
         for individual_char in iban_str:
-            new_iban_str += consts.CHAR_TO_INT_VALUE.get(individual_char, individual_char)
+            new_iban_str += constants.CHAR_TO_INT_VALUE.get(individual_char, individual_char)
         new_iban_int = int(new_iban_str)
         if new_iban_int % 97 == 1:
             return {"message": "The IBAN number you provided is valid"}
