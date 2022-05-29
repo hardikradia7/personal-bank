@@ -7,6 +7,7 @@ from app.schemas.v1 import ibans
 from app.utils import constants
 from app.utils import exceptions
 from app.utils import error_codes
+from app.utils import messages
 
 router = APIRouter()
 
@@ -30,13 +31,17 @@ def validate_iban_number(request: ibans.IBANValidateRequest):
         # Checking if iban number in input contains any special chars
         if re.search(r'[^a-zA-Z0-9]', iban_str):
             raise exceptions.IllegalIBANCharacter(
-                getattr(error_codes, "ILLEGAL_IBAN_CHARACTER")
+                error_codes.ILLEGAL_IBAN_CHARACTER
             )
-
+        expected_n = constants.COUNTRY_CODE_IBAN_LENGTH.get(country_code)
+        if not expected_n:
+            raise exceptions.CountryCodeNotSupported(
+                error_codes.COUNTRY_CODE_NOT_SUPPORTED
+            )
         # Checking if len of iban number is valid acc to country code
         if n != constants.COUNTRY_CODE_IBAN_LENGTH.get(country_code, 0) or n == 0:
             raise exceptions.InvalidIBANLength(
-                getattr(error_codes, "INVALID_IBAN_LENGTH")
+                error_codes.INVALID_IBAN_LENGTH
             )
 
         # Rearranging and converting alphabets to int eq and finding modulus of 97
@@ -46,10 +51,10 @@ def validate_iban_number(request: ibans.IBANValidateRequest):
             new_iban_str += constants.CHAR_TO_INT_VALUE.get(individual_char, individual_char)
         new_iban_int = int(new_iban_str)
         if new_iban_int % 97 == 1:
-            return {"message": "The IBAN number you provided is valid"}
+            return {"message": messages.VALID_IBAN_MSG}
         else:
             raise exceptions.InvalidIBAN(
-                getattr(error_codes, "INVALID_IBAN")
+                error_codes.INVALID_IBAN
             )
 
     except exceptions.IBANApiException as ex:
