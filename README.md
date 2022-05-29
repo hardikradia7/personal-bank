@@ -6,7 +6,7 @@
 ## 1. Instructions to deploy this service as docker container:
 
     1. Go to personal-bank directory using command 'cd /path/to/personal-bank'.
-    2. Create a docker image with help of Dockerfile using command 'docker build -t personal-bank:v1.0'.
+    2. Create a docker image with help of Dockerfile using command 'docker build -t personal-bank:v1.0 .'.
     3. Run docker image using command 'docker run -dp 8000:8000 personal-bank:v1.0'
 
 ## 2. Make api calls on validate iban endpoint:
