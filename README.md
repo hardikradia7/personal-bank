@@ -17,10 +17,11 @@
 
 
 ## 3. Running unit test cases on local environment:
-    1. Run command install 'pip install pytest' or 'pip3 install pytest'
-    2. Run command install 'pip install pytest' or 'pip3 install fastapi'
+    1. Install python3 using installer specific to OS from https://www.python.org/downloads/
+    2. Run command install 'pip install pytest' or 'pip3 install pytest'
+    3. Run command install 'pip install pytest' or 'pip3 install fastapi'
     4. Go to personal-bank directory using command 'cd /path/to/personal-bank'.
-    4. To execute tests run command 'pytest -v'
+    5. To execute tests run command 'pytest -v'
 
 ## 4. Some Sample Images for API Call and Unit test case execution
 
